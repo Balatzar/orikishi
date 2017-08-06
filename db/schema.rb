@@ -16,13 +16,19 @@ ActiveRecord::Schema.define(version: 20170806150621) do
   enable_extension "plpgsql"
 
   create_table "branches", force: :cascade do |t|
-    t.bigint "frame_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["frame_id"], name: "index_branches_on_frame_id"
+  end
+
+  create_table "branches_frames", id: false, force: :cascade do |t|
+    t.bigint "frame_id"
+    t.bigint "branch_id"
+    t.index ["branch_id"], name: "index_branches_frames_on_branch_id"
+    t.index ["frame_id"], name: "index_branches_frames_on_frame_id"
   end
 
   create_table "frames", force: :cascade do |t|
+    t.string "text"
     t.bigint "step_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -38,6 +44,7 @@ ActiveRecord::Schema.define(version: 20170806150621) do
 
   create_table "stories", force: :cascade do |t|
     t.string "name"
+    t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

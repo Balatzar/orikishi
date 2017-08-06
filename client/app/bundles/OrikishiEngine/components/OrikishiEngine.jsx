@@ -1,43 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { ourStory } from "../exampleData/data"
-
-export class HelloWorld extends React.Component {
-  static propTypes = {
-    name: PropTypes.string.isRequired, // this is passed from the Rails view
-  };
-
-  /**
-   * @param props - Comes from your rails view.
-   * @param _railsContext - Comes from React on Rails
-   */
-  constructor(props, _railsContext) {
-    super(props);
-
-    // How to set initial state in ES6 class syntax
-    // https://facebook.github.io/react/docs/reusable-components.html#es6-classes
-    this.state = { name: this.props.name };
-  }
-
-  updateName = (name) => {
-    this.setState({ name });
-  };
-
-  render() {
-    return (
-      <div>
-      </div>
-    );
-  }
-}
 
 class OrikishiEngine extends Component {
-  constructor() {
-    super()
+  constructor(props, _railsContext) {
+    super(props)
     this.state = {
-      ourStory,
+      ourStory: props.story,
       myStory: [],
-      currentBranch: 0,
+      currentBranch: 1,
       lastStep: 0,
     }
 
@@ -45,7 +15,7 @@ class OrikishiEngine extends Component {
   }
 
   componentDidMount() {
-    this.chooseBranch(0)
+    this.chooseBranch(1)
   }
 
   setCurrentBranch(newCurrentBranch) {
@@ -76,8 +46,8 @@ class OrikishiEngine extends Component {
     return (
       <div className="App">
         <div className="Engine">
-          <h2>Mon Engin</h2>
-          <Story story={ this.state.myStory } name={ourStory.name} currentBranch={ this.state.currentBranch} setCurrentBranch={this.setCurrentBranch} />
+          <h2>Orikishi</h2>
+          <Story story={ this.state.myStory } name={this.state.ourStory.name} currentBranch={ this.state.currentBranch} setCurrentBranch={this.setCurrentBranch} />
         </div>
       </div>
     );
