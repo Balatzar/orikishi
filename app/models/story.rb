@@ -10,12 +10,12 @@ class Story < ApplicationRecord
   def jsonify
     {
       name: self.name,
-      steps: self.steps.sort.map do |s|
+      steps: self.steps.map do |s|
         {
-          frames: s.frames.sort.map do |f|
+          frames: s.frames.map do |f|
             {
               text: f.text,
-              branches: f.branches.sort.map { |b| b.id },
+              branches: f.branches.map { |b| b.id },
               id: f.id
             }
           end

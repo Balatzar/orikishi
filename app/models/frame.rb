@@ -4,7 +4,7 @@ class Frame < ApplicationRecord
 
   def add_follow_up(new_frame)
     step = self.step
-    steps = step.story.steps.reload.sort
+    steps = step.story.steps.reload
     frame = Frame.create new_frame
     if step == steps.last
       new_step = Step.create story: step.story
