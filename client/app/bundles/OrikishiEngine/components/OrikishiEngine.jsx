@@ -20,14 +20,14 @@ class OrikishiEngine extends Component {
   componentDidMount() {
     this.chooseBranch(1)
   }
-  
+
   setCurrentBranch(newCurrentBranch) {
     this.setState({
       currentBranch: newCurrentBranch,
     })
     this.chooseBranch(newCurrentBranch)
   }
-  
+
   chooseBranch(newBranch) {
     const myStory = this.state.myStory
     const ourStory = this.state.ourStory.steps
@@ -44,7 +44,7 @@ class OrikishiEngine extends Component {
     }
     this.setState({ myStory })
   }
-  
+
   addFollowUp(frame, { text }, frameComponent) {
     event.preventDefault()
     request
@@ -60,43 +60,38 @@ class OrikishiEngine extends Component {
       }
     })
   }
-  
+
   insertFollowUpIntoMyStory(newFrame, oldFrameId) {
     console.log(this.state)
     const myStory = this.state.myStory
-    let oldFrame, nextStep, isLastStep
+    let oldFrame, nextStep, isLastStep, branch
     
     for (let i = 0, end = myStory.length; i < end; i += 1) {
       oldFrame = myStory[i].find(f => f.id === oldFrameId)
       if (oldFrame) {
-        if (i === end - 1) {
-          isLastStep = true
-        } else {
-          nextStep = myStory[i + 1].slice(0)
-        }
+        branch = oldFrame.branches.length > 1 ? oldFrame.branches[1] : oldFrame.branches[0]
         myStory.splice(i)
         myStory.push([oldFrame])
+        if (this.state.ourStory.steps[i + 1]) {
+          nextStep = this.state.ourStory.steps[i + 1].frames.filter(f => f.branches.includes(branch))
+          nextStep.push(newFrame)
+        } else {
+          nextStep = [newFrame]
+        }
+        myStory.push(nextStep)
         break
       }
     }
 
-    if (isLastStep) {
-      myStory.push([newFrame])
-      // aller chercher dans ourStory les autres
-      // frames de la branche de oldFrame et de cette step
-    } else {
-      myStory.push(nextStep)
-      nextStep.push(newFrame)
-    }
-    console.log(myStory)
     this.setState({
       myStory,
-      currentBranch: newFrame.branches[newFrame.branches.length - 1],
+      currentBranch: branch,
     })
     console.log(this.state)
   }
 
   render() {
+    console.log(this.state)
     return (
       <div className="App">
         <div className="Engine">
@@ -140,6 +135,8 @@ class Frame extends Component {
 
     const click = () => {
       if (this.props.last) {
+        console.log(frame)
+        console.log(branch)
         this.props.setCurrentBranch(branch)
       }
     }
