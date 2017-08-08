@@ -14,6 +14,7 @@ class OrikishiEngine extends Component {
     }
 
     this.setCurrentBranch = this.setCurrentBranch.bind(this)
+    this.rewind = this.rewind.bind(this)
     this.addFollowUp = this.addFollowUp.bind(this)
   }
 
@@ -37,12 +38,27 @@ class OrikishiEngine extends Component {
     }
     for (let i = myStory.length, end = ourStory.length; i < end; i += 1) {
       const currentFrames = ourStory[i].frames
-      myStory.push(currentFrames.filter(f => f.branches.includes(newBranch)))
-      if (currentFrames.length > 1) {
+      const framesToAdd = currentFrames.filter(f => f.branches.includes(newBranch))
+      myStory.push(framesToAdd)
+      if (framesToAdd.length > 1) {
         break
       }
     }
     this.setState({ myStory })
+  }
+
+  rewind(newBranch, frame) {
+    const { myStory, ourStory } = this.state
+    let nextStep
+    
+    for (let i = 0, end = myStory.length; i < end; i += 1) {
+      if (myStory[i].find(f => f.id === frame.id)) {
+        myStory.splice(i + 1)
+        this.setState({ myStory })
+        this.chooseBranch(newBranch)
+        break
+      }
+    }
   }
 
   addFollowUp(frame, { text }, frameComponent) {
@@ -96,7 +112,7 @@ class OrikishiEngine extends Component {
       <div className="App">
         <div className="Engine">
           <h2>Orikishi</h2>
-          <Story story={ this.state.myStory } name={this.state.ourStory.name} currentBranch={ this.state.currentBranch} setCurrentBranch={this.setCurrentBranch} addFollowUp={this.addFollowUp} />
+          <Story story={ this.state.myStory } name={this.state.ourStory.name} currentBranch={ this.state.currentBranch} setCurrentBranch={this.setCurrentBranch} rewind={this.rewind} addFollowUp={this.addFollowUp} />
         </div>
       </div>
     );
@@ -105,7 +121,7 @@ class OrikishiEngine extends Component {
 
 class Story extends Component {
   render() {
-    const steps = this.props.story.map((s, i) => <Step step={s} key={i} currentBranch={this.props.currentBranch} setCurrentBranch={this.props.setCurrentBranch} last={i === this.props.story.length - 1} addFollowUp={this.props.addFollowUp} />)
+    const steps = this.props.story.map((s, i) => <Step step={s} key={i} currentBranch={this.props.currentBranch} setCurrentBranch={this.props.setCurrentBranch} last={i === this.props.story.length - 1} rewind={this.props.rewind} addFollowUp={this.props.addFollowUp} />)
     return (
       <div className="Story">
         <h3>{ this.props.name }</h3>
@@ -117,7 +133,7 @@ class Story extends Component {
 
 class Step extends Component {
   render() {
-    const frames = this.props.step.map((f, i) => <Frame frame={f} key={i} currentBranch={this.props.currentBranch} setCurrentBranch={this.props.setCurrentBranch} last={this.props.last} addFollowUp={this.props.addFollowUp} />)
+    const frames = this.props.step.map((f, i) => <Frame frame={f} key={i} currentBranch={this.props.currentBranch} addFollowUp={this.props.addFollowUp} onClick={this.props.last ? this.props.setCurrentBranch : this.props.rewind} />)
 
     return (
       <div className="Step">
@@ -130,22 +146,12 @@ class Step extends Component {
 class Frame extends Component {
   render() {
     const frame = this.props.frame
-
-    const branch = frame.branches.length > 1 ? frame.branches.find(b => b !== this.props.currentBranch) : frame.branches[0]
-
-    const click = () => {
-      if (this.props.last) {
-        console.log(frame)
-        console.log(branch)
-        this.props.setCurrentBranch(branch)
-      }
-    }
-
+    const branch = frame.branches[1] || frame.branches[0]
     let text
 
     return (
       <div className="Frame">
-        <div onClick={click}>
+        <div onClick={() => this.props.onClick(branch, frame)}>
           <img src={frame.img} alt=""/>
           <p>{frame.text}</p>
         </div>
