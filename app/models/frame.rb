@@ -14,7 +14,6 @@ class Frame < ApplicationRecord
       next_step = steps[steps.index(step) + 1]
       next_step.frames << frame
       branch = Branch.create!
-      # self.branches << branch
       frame.branches << self.branches.last
       branch.frames << frame
     end

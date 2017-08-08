@@ -1,30 +1,33 @@
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import ReactOnRails from 'react-on-rails';
+import request from 'superagent'
+
+const csrfToken = ReactOnRails.authenticityToken();
 
 class OrikishiEngine extends Component {
-  constructor(props, _railsContext) {
+  constructor(props) {
     super(props)
     this.state = {
       ourStory: props.story,
       myStory: [],
       currentBranch: 1,
-      lastStep: 0,
     }
 
     this.setCurrentBranch = this.setCurrentBranch.bind(this)
+    this.addFollowUp = this.addFollowUp.bind(this)
   }
 
   componentDidMount() {
     this.chooseBranch(1)
   }
-
+  
   setCurrentBranch(newCurrentBranch) {
     this.setState({
       currentBranch: newCurrentBranch,
     })
     this.chooseBranch(newCurrentBranch)
   }
-
+  
   chooseBranch(newBranch) {
     const myStory = this.state.myStory
     const ourStory = this.state.ourStory.steps
@@ -41,13 +44,64 @@ class OrikishiEngine extends Component {
     }
     this.setState({ myStory })
   }
+  
+  addFollowUp(frame, { text }, frameComponent) {
+    event.preventDefault()
+    request
+    .post(this.props.add_follow_up_path)
+    .send({ frame, text, authenticity_token: csrfToken })
+    .end((err, { body }) => {
+      if (err) {
+        console.warn(err)
+      } else {
+        console.log(body)
+        frameComponent.refs.textInput.value = ""
+        this.insertFollowUpIntoMyStory(body.new_frame, body.old_frame_id)
+      }
+    })
+  }
+  
+  insertFollowUpIntoMyStory(newFrame, oldFrameId) {
+    console.log(this.state)
+    const myStory = this.state.myStory
+    let oldFrame, nextStep, isLastStep
+    
+    for (let i = 0, end = myStory.length; i < end; i += 1) {
+      oldFrame = myStory[i].find(f => f.id === oldFrameId)
+      if (oldFrame) {
+        if (i === end - 1) {
+          isLastStep = true
+        } else {
+          nextStep = myStory[i + 1].slice(0)
+        }
+        myStory.splice(i)
+        myStory.push([oldFrame])
+        break
+      }
+    }
+
+    if (isLastStep) {
+      myStory.push([newFrame])
+      // aller chercher dans ourStory les autres
+      // frames de la branche de oldFrame et de cette step
+    } else {
+      myStory.push(nextStep)
+      nextStep.push(newFrame)
+    }
+    console.log(myStory)
+    this.setState({
+      myStory,
+      currentBranch: newFrame.branches[newFrame.branches.length - 1],
+    })
+    console.log(this.state)
+  }
 
   render() {
     return (
       <div className="App">
         <div className="Engine">
           <h2>Orikishi</h2>
-          <Story story={ this.state.myStory } name={this.state.ourStory.name} currentBranch={ this.state.currentBranch} setCurrentBranch={this.setCurrentBranch} />
+          <Story story={ this.state.myStory } name={this.state.ourStory.name} currentBranch={ this.state.currentBranch} setCurrentBranch={this.setCurrentBranch} addFollowUp={this.addFollowUp} />
         </div>
       </div>
     );
@@ -56,7 +110,7 @@ class OrikishiEngine extends Component {
 
 class Story extends Component {
   render() {
-    const steps = this.props.story.map((s, i) => <Step step={s} key={i} currentBranch={this.props.currentBranch} setCurrentBranch={this.props.setCurrentBranch} last={i === this.props.story.length - 1} />)
+    const steps = this.props.story.map((s, i) => <Step step={s} key={i} currentBranch={this.props.currentBranch} setCurrentBranch={this.props.setCurrentBranch} last={i === this.props.story.length - 1} addFollowUp={this.props.addFollowUp} />)
     return (
       <div className="Story">
         <h3>{ this.props.name }</h3>
@@ -68,7 +122,7 @@ class Story extends Component {
 
 class Step extends Component {
   render() {
-    const frames = this.props.step.map((f, i) => <Frame frame={f} key={i} currentBranch={this.props.currentBranch} setCurrentBranch={this.props.setCurrentBranch} last={this.props.last} />)
+    const frames = this.props.step.map((f, i) => <Frame frame={f} key={i} currentBranch={this.props.currentBranch} setCurrentBranch={this.props.setCurrentBranch} last={this.props.last} addFollowUp={this.props.addFollowUp} />)
 
     return (
       <div className="Step">
@@ -90,10 +144,21 @@ class Frame extends Component {
       }
     }
 
+    let text
+
     return (
-      <div className="Frame" onClick={click}>
-        <img src={frame.img} alt=""/>
-        <p>{frame.text}</p>
+      <div className="Frame">
+        <div onClick={click}>
+          <img src={frame.img} alt=""/>
+          <p>{frame.text}</p>
+        </div>
+        <p>Continuer cette histoire</p>
+        <form onSubmit={event => {
+          event.preventDefault(); this.props.addFollowUp(frame.id, { text }, this)}
+        }>
+          <input ref="textInput" type="text" placeholder="Votre texte ici" onChange={event => text = event.target.value}/>
+          <button type="submit">Creer</button>
+        </form>
       </div>
     )
   }
