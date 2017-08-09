@@ -10,7 +10,7 @@ class OrikishiEngine extends Component {
     this.state = {
       ourStory: props.story,
       myStory: [],
-      currentBranch: 1,
+      currentBranch: props.story.steps[0].frames[0].branches[0],
     }
 
     this.setCurrentBranch = this.setCurrentBranch.bind(this)
@@ -19,7 +19,7 @@ class OrikishiEngine extends Component {
   }
 
   componentDidMount() {
-    this.chooseBranch(1)
+    this.chooseBranch(this.state.currentBranch)
   }
 
   setCurrentBranch(newCurrentBranch) {
