@@ -39,15 +39,17 @@ class OrikishiEngine extends Component {
     for (let i = myStory.length, end = ourStory.length; i < end; i += 1) {
       const currentFrames = ourStory[i].frames
       const framesToAdd = currentFrames.filter(f => f.branches.includes(newBranch))
+      newBranch = framesToAdd[0].branches[1] || framesToAdd[0].branches[0]
       myStory.push(framesToAdd)
       if (framesToAdd.length > 1) {
         break
       }
     }
-    this.setState({ myStory })
+    this.setState({ myStory, currentBranch: newBranch })
   }
 
   rewind(newBranch, frame) {
+    console.log("REWIND")
     const { myStory, ourStory } = this.state
     let nextStep
     
