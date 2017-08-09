@@ -62,7 +62,6 @@ class OrikishiEngine extends Component {
   }
 
   addFollowUp(frame, { text }, frameComponent) {
-    event.preventDefault()
     request
     .post(this.props.add_follow_up_path)
     .send({ frame, text, authenticity_token: csrfToken })
@@ -157,7 +156,8 @@ class Frame extends Component {
         </div>
         <p>Continuer cette histoire</p>
         <form onSubmit={event => {
-          event.preventDefault(); this.props.addFollowUp(frame.id, { text }, this)}
+          event.preventDefault();
+          this.props.addFollowUp(frame.id, { text }, this)}
         }>
           <input ref="textInput" type="text" placeholder="Votre texte ici" onChange={event => text = event.target.value}/>
           <button type="submit">Creer</button>
