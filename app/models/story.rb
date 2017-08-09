@@ -16,7 +16,8 @@ class Story < ApplicationRecord
             {
               text: f.text,
               branches: f.branches.sort.map { |b| b.id },
-              id: f.id
+              id: f.id,
+              url: f.image.url(:medium)
             }
           end
         }

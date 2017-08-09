@@ -153,7 +153,7 @@ class Frame extends Component {
     return (
       <div className="Frame">
         <div onClick={() => this.props.onClick(branch, frame)}>
-          <img src={frame.img} alt=""/>
+          <img src={frame.url} alt=""/>
           <p>{frame.text}</p>
         </div>
         <p>Continuer cette histoire</p>
