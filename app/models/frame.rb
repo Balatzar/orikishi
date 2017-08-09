@@ -4,17 +4,17 @@ class Frame < ApplicationRecord
 
   def add_follow_up(new_frame)
     step = self.step
-    steps = step.story.steps.reload
+    steps = step.story.steps.reload.sort
     frame = Frame.create new_frame
     if step == steps.last
       new_step = Step.create story: step.story
       new_step.frames << frame
-      self.branches.first.frames << frame
+      self.branches.sort.first.frames << frame
     else
       next_step = steps[steps.index(step) + 1]
       next_step.frames << frame
       branch = Branch.create!
-      frame.branches << self.branches.last
+      frame.branches << self.branches.sort.last
       branch.frames << frame
     end
     frame
