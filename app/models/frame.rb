@@ -9,17 +9,20 @@ class Frame < ApplicationRecord
     step = self.step
     steps = step.story.steps.reload.sort
     frame = Frame.create new_frame
-    if step == steps.last
+    next_step = steps[steps.index(step) + 1]
+    branch_from = self.branches.reload.sort.last
+    frame.branches << branch_from
+    if next_step.nil?
       new_step = Step.create story: step.story
       new_step.frames << frame
-      self.branches.sort.first.frames << frame
     else
-      next_step = steps[steps.index(step) + 1]
-      next_step.frames << frame
-      branch = Branch.create!
-      frame.branches << self.branches.sort.last
-      branch.frames << frame
+      if next_step.frames.find { |f| f.branches.include? branch_from }
+        branch_to = Branch.create
+        frame.branches << branch_to
+      end
+      frame.step = next_step
     end
+    frame.save
     frame
   end
 end

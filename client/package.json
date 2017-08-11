@@ -6,7 +6,10 @@
     "build:production": "NODE_ENV=production webpack --config webpack.config.js",
     "build:development": "NODE_ENV=development webpack -w --config webpack.config.js"
   },
-  "cacheDirectories": ["node_modules", "client/node_modules"],
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ],
   "dependencies": {
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
@@ -24,8 +27,9 @@
     "react-dom": "^15.5.4",
     "react-on-rails": "8.0.0",
     "webpack": "^2.3.3",
-    "webpack-manifest-plugin": "^1.1.0"
+    "webpack-manifest-plugin": "^1.1.0",
+    "react-skylight": "^0.4.2",
+    "superagent": "^3.5.2"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

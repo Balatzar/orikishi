@@ -7,12 +7,13 @@ class OrikishiController < ApplicationController
 
   def add_follow_up
     frame = Frame.find(params[:frame])
-    new_frame = frame.add_follow_up text: params[:text]
+    new_frame = frame.add_follow_up params.require(:newFrame).permit(:text, :image)
     res = {
       new_frame: {
         id: new_frame.id,
         text: new_frame.text,
-        branches: new_frame.branches.map { |b| b.id }
+        branches: new_frame.branches.map { |b| b.id },
+        url: new_frame.image.url(:medium)
       },
       old_frame_id: frame.id
     }

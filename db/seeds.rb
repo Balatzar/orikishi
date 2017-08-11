@@ -25,6 +25,9 @@ frame11 = frame6.add_follow_up text: "'Au village !'"
 frame12 = frame6.add_follow_up text: "'Nul part :U'"
 frame13 = frame7.add_follow_up text: "'Oh shit' pensa le petit chaperon rouge"
 
+frame14 = frame4.add_follow_up text: "Je dois bugger"
+
+
 
 
 story = Story.create! name: "Stick Adventure Bro"

@@ -3,9 +3,5 @@
     "postinstall": "cd client && yarn install"
   },
   "name": "orikishi",
-  "private": true,
-  "dependencies": {
-    "react-skylight": "^0.4.2",
-    "superagent": "^3.5.2"
-  }
+  "private": true
 }
