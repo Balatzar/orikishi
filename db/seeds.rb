@@ -34,21 +34,21 @@ story = Story.create! name: "Stick Adventure Bro"
 
 step0 = Step.create! story: story
 
-frame0 = Frame.create! text: "Choose your weapon", step: step0, image: File.new("#{Rails.root}/app/assets/images/seeds/0.jpg")
+frame0 = Frame.create! text: "Choose your weapon", step: step0, image: File.new("#{Rails.root}/db/fixtures/seeds/0.jpg")
 
 branch0 = Branch.create!
 branch0.frames << frame0
 
-frame1 = frame0.add_follow_up text: "", image: File.new("#{Rails.root}/app/assets/images/seeds/1-1.jpg")
-frame2 = frame0.add_follow_up text: "", image: File.new("#{Rails.root}/app/assets/images/seeds/1-2.jpg")
+frame1 = frame0.add_follow_up text: "", image: File.new("#{Rails.root}/db/fixtures/seeds/1-1.jpg")
+frame2 = frame0.add_follow_up text: "", image: File.new("#{Rails.root}/db/fixtures/seeds/1-2.jpg")
 
-frame3 = frame1.add_follow_up text: "Hum hi", image: File.new("#{Rails.root}/app/assets/images/seeds/1-1 1-1.jpg")
-frame4 = frame1.add_follow_up text: "What are you doing here?!", image: File.new("#{Rails.root}/app/assets/images/seeds/1-1 1-2.jpg")
-frame5 = frame2.add_follow_up text: "Hum hi", image: File.new("#{Rails.root}/app/assets/images/seeds/1-2 1-1.jpg")
-frame6 = frame2.add_follow_up text: "What are you doing here?!", image: File.new("#{Rails.root}/app/assets/images/seeds/1-2 1-2.jpg")
+frame3 = frame1.add_follow_up text: "Hum hi", image: File.new("#{Rails.root}/db/fixtures/seeds/1-1 1-1.jpg")
+frame4 = frame1.add_follow_up text: "What are you doing here?!", image: File.new("#{Rails.root}/db/fixtures/seeds/1-1 1-2.jpg")
+frame5 = frame2.add_follow_up text: "Hum hi", image: File.new("#{Rails.root}/db/fixtures/seeds/1-2 1-1.jpg")
+frame6 = frame2.add_follow_up text: "What are you doing here?!", image: File.new("#{Rails.root}/db/fixtures/seeds/1-2 1-2.jpg")
 
-frame7 = frame3.add_follow_up text: "Let's party my brogon!", image: File.new("#{Rails.root}/app/assets/images/seeds/2-1 1-1 1-1.jpg")
-frame8 = frame3.add_follow_up text: "OK then!", image: File.new("#{Rails.root}/app/assets/images/seeds/2-1 1-1 1-2.jpg")
+frame7 = frame3.add_follow_up text: "Let's party my brogon!", image: File.new("#{Rails.root}/db/fixtures/seeds/2-1 1-1 1-1.jpg")
+frame8 = frame3.add_follow_up text: "OK then!", image: File.new("#{Rails.root}/db/fixtures/seeds/2-1 1-1 1-2.jpg")
 
-frame9 = frame5.add_follow_up text: "I shall cook us magic marshmallow!", image: File.new("#{Rails.root}/app/assets/images/seeds/2-2 1-1 1-1.jpg")
-frame10 = frame5.add_follow_up text: "NIET IS FURFIRE!", image: File.new("#{Rails.root}/app/assets/images/seeds/2-2 1-1 1-2.jpg")
+frame9 = frame5.add_follow_up text: "I shall cook us magic marshmallow!", image: File.new("#{Rails.root}/db/fixtures/seeds/2-2 1-1 1-1.jpg")
+frame10 = frame5.add_follow_up text: "NIET IS FURFIRE!", image: File.new("#{Rails.root}/db/fixtures/seeds/2-2 1-1 1-2.jpg")
