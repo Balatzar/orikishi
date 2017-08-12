@@ -13,7 +13,7 @@ class OrikishiEngine extends Component {
       myStory: [],
       currentBranch: props.story.steps[0].frames[0].branches[0],
       modalOpen: false,
-      currentFrame: 0
+      currentFrame: 0,
     };
 
     this.closeModal = this.closeModal.bind(this);
@@ -34,13 +34,13 @@ class OrikishiEngine extends Component {
   openModal(currentFrame) {
     this.setState({
       modalOpen: true,
-      currentFrame
+      currentFrame,
     });
   }
 
   setCurrentBranch(newCurrentBranch) {
     this.setState({
-      currentBranch: newCurrentBranch
+      currentBranch: newCurrentBranch,
     });
     this.chooseBranch(newCurrentBranch);
   }
@@ -90,7 +90,7 @@ class OrikishiEngine extends Component {
       .send({
         frame: this.state.currentFrame,
         newFrame: { text, image },
-        authenticity_token: csrfToken
+        authenticity_token: csrfToken,
       })
       .end((err, { body }) => {
         if (err) {
@@ -133,7 +133,7 @@ class OrikishiEngine extends Component {
 
     this.setState({
       myStory,
-      currentBranch: branch
+      currentBranch: branch,
     });
     console.log(this.state);
   }
@@ -166,7 +166,7 @@ class Story extends Component {
     this.state = {
       imagePreviewUrl: "",
       fileName: "",
-      image: ""
+      image: "",
     };
     this.handleImageChange = this.handleImageChange.bind(this);
   }
@@ -177,7 +177,7 @@ class Story extends Component {
     reader.onloadend = () => {
       this.setState({
         imagePreviewUrl: reader.result,
-        image: reader.result
+        image: reader.result,
       });
     };
 
@@ -213,7 +213,11 @@ class Story extends Component {
           <h4>
             {this.state.file ? this.state.file.name : ""}
           </h4>
-          <img src={this.state.imagePreviewUrl} alt="" />
+          <img
+            className="img-preview"
+            src={this.state.imagePreviewUrl}
+            alt=""
+          />
           <form
             onSubmit={event => {
               event.preventDefault();
