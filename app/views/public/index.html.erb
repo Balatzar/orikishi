@@ -1,0 +1,17 @@
+<div class="content">
+
+  <h1>Orikishi</h1>
+
+  <h3>All the stories :</h3>
+
+  <% @stories.each do |story| %>
+    <p>
+      <%= link_to story.name, "/#{story.slug}" %>
+    </p>
+  <% end %>
+
+  <h3>Create a story</h3>
+
+  <%= link_to "New story", new_story_path %>
+
+</div>

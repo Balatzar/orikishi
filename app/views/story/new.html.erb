@@ -1,0 +1,18 @@
+<div class="content">
+
+  <h1>Create a new story</h1>
+
+  <%= form_tag(story_index_path, multipart: true) do %>
+    <%= label_tag(:name, "Name of the story:") %>
+    <%= text_field_tag(:name) %>
+    <div>
+      <h5>First frame</h5>
+      <%= label_tag(:text, "Text of the first frame:") %>
+      <%= text_field_tag(:text) %>
+      <br>
+      <%= file_field_tag :image %>
+    </div>
+    <%= submit_tag("Create") %>
+  <% end %>
+
+</div>

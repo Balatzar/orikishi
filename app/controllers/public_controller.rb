@@ -1,7 +1,11 @@
-class OrikishiController < ApplicationController
-  before_action :set_story, only: [:index]
+class PublicController < ApplicationController
+  before_action :set_story, only: [:orikishi]
 
   def index
+    @stories = Story.all
+  end
+
+  def orikishi
     @orikishi_engine_props = { story: @story.jsonify, add_follow_up_path: "/#{@story.slug}/add_follow_up" }
   end
 

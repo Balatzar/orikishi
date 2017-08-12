@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
-  get '/:story', to: 'orikishi#index'
-  post '/:story/add_follow_up', to: 'orikishi#add_follow_up'
+  get '/', to: 'public#index'
+  get '/:story', to: 'public#orikishi'
+  post '/:story/add_follow_up', to: 'public#add_follow_up'
+
+  resources :story, only: ["new", "create"]
 end

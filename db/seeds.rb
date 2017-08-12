@@ -1,11 +1,9 @@
-story = Story.create! name: "Test Text"
+story = Story.create_new_story({
+  name: "Test Text",
+  text: "Le petit chaperon rouge"
+})
 
-step0 = Step.create! story: story
-
-frame0 = Frame.create! text: "Le petit chaperon rouge", step: step0
-
-branch0 = Branch.create!
-branch0.frames << frame0
+frame0 = story.steps.first.frames.first
 
 frame1 = frame0.add_follow_up text: "croise un loup."
 
@@ -25,19 +23,16 @@ frame11 = frame6.add_follow_up text: "'Au village !'"
 frame12 = frame6.add_follow_up text: "'Nul part :U'"
 frame13 = frame7.add_follow_up text: "'Oh shit' pensa le petit chaperon rouge"
 
-frame14 = frame4.add_follow_up text: "Je dois bugger"
+frame14 = frame4.add_follow_up text: "Je ne dois pas bugger"
 
 
+story = Story.create_new_story({
+  name: "Stick Adventure Bro",
+  text: "Choose your weapon",
+  image: File.new("#{Rails.root}/db/fixtures/seeds/0.jpg")
+})
 
-
-story = Story.create! name: "Stick Adventure Bro"
-
-step0 = Step.create! story: story
-
-frame0 = Frame.create! text: "Choose your weapon", step: step0, image: File.new("#{Rails.root}/db/fixtures/seeds/0.jpg")
-
-branch0 = Branch.create!
-branch0.frames << frame0
+frame0 = story.steps.first.frames.first
 
 frame1 = frame0.add_follow_up text: "", image: File.new("#{Rails.root}/db/fixtures/seeds/1-1.jpg")
 frame2 = frame0.add_follow_up text: "", image: File.new("#{Rails.root}/db/fixtures/seeds/1-2.jpg")
@@ -52,3 +47,5 @@ frame8 = frame3.add_follow_up text: "OK then!", image: File.new("#{Rails.root}/d
 
 frame9 = frame5.add_follow_up text: "I shall cook us magic marshmallow!", image: File.new("#{Rails.root}/db/fixtures/seeds/2-2 1-1 1-1.jpg")
 frame10 = frame5.add_follow_up text: "NIET IS FURFIRE!", image: File.new("#{Rails.root}/db/fixtures/seeds/2-2 1-1 1-2.jpg")
+
+pp "Seeds created"
