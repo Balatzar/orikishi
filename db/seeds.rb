@@ -48,4 +48,20 @@ frame8 = frame3.add_follow_up text: "OK then!", image: File.new("#{Rails.root}/d
 frame9 = frame5.add_follow_up text: "I shall cook us magic marshmallow!", image: File.new("#{Rails.root}/db/fixtures/seeds/2-2 1-1 1-1.jpg")
 frame10 = frame5.add_follow_up text: "NIET IS FURFIRE!", image: File.new("#{Rails.root}/db/fixtures/seeds/2-2 1-1 1-2.jpg")
 
-pp "Seeds created"
+pp "Stories created"
+
+survey = Survey.create! name: "Enquete de satisfaction", random: true, time: 5
+
+question0 = Question.create! survey: survey, text: "Etes-vous satisfait du site pour l'instant ?", multiple: false, required: true
+question1 = Question.create! survey: survey, text: "Pensez vous que nous devrions mettre un 'paint' directement dans le site ?", multiple: false, required: true
+question2 = Question.create! survey: survey, text: "Quelle est la ou les prochaines fonctionnalités que vous aimeriez voir ?", multiple: true, required: false
+
+choice0 = Choice.create! question: question0, text: "oui"
+choice1 = Choice.create! question: question0, text: "non"
+choice2 = Choice.create! question: question1, text: "oui"
+choice3 = Choice.create! question: question1, text: "non"
+choice4 = Choice.create! question: question2, text: "des commentaires"
+choice5 = Choice.create! question: question2, text: "d'autres media (son, video...)"
+choice6 = Choice.create! question: question2, text: "un mode donjon et dragon (jet de dés qui definissent la prochaine image)"
+
+pp "Survey created"

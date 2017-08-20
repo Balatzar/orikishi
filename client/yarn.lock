@@ -2252,7 +2252,14 @@ react-skylight@^0.4.2:
   dependencies:
     prop-types "^15.5.10"
 
-react@^15.5.4:
+react-survey@^1.0.13:
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/react-survey/-/react-survey-1.0.13.tgz#91b137bcd90dd64ba37a95f84ce4b2436ca201ac"
+  dependencies:
+    react "^15.6.1"
+    superagent "^3.5.2"
+
+react@^15.5.4, react@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/react/-/react-15.6.1.tgz#baa8434ec6780bde997cdc380b79cd33b96393df"
   dependencies:

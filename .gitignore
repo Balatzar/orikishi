@@ -30,3 +30,4 @@ node_modules
 
 # Paperclip local images
 public/system/
+Release.key

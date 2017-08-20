@@ -92,10 +92,11 @@ class OrikishiEngine extends Component {
         newFrame: { text, image },
         authenticity_token: csrfToken,
       })
-      .end((err, { body }) => {
+      .end((err, res) => {
         if (err) {
           console.warn(err);
         } else {
+          const body = res.body;
           console.log(body);
           frameComponent.refs.textInput.value = "";
           this.setState({ modalOpen: false });

@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   post '/:story/add_follow_up', to: 'public#add_follow_up'
 
   resources :story, only: ["new", "create"]
+  resources :survey, only: ["create"]
+  resources :participation, only: ["create"]
 end
