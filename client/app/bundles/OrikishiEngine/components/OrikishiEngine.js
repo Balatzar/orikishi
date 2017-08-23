@@ -14,6 +14,9 @@ class OrikishiEngine extends Component {
       currentBranch: props.story.steps[0].frames[0].branches[0],
       modalOpen: false,
       currentFrame: 0,
+      modalFrameFullscreen: false,
+      modalFrameFullscreenImg: "",
+      modalFrameFullscreenText: "",
     };
 
     this.closeModal = this.closeModal.bind(this);
@@ -21,6 +24,7 @@ class OrikishiEngine extends Component {
     this.setCurrentBranch = this.setCurrentBranch.bind(this);
     this.rewind = this.rewind.bind(this);
     this.addFollowUp = this.addFollowUp.bind(this);
+    this.showFrameFullScreen = this.showFrameFullScreen.bind(this);
   }
 
   componentDidMount() {
@@ -85,6 +89,9 @@ class OrikishiEngine extends Component {
   }
 
   addFollowUp(text, image, frameComponent) {
+    if (!text || !image || !frameComponent) {
+      return;
+    }
     request
       .post(this.props.add_follow_up_path)
       .send({
@@ -139,11 +146,36 @@ class OrikishiEngine extends Component {
     console.log(this.state);
   }
 
+  showFrameFullScreen(url, text) {
+    this.setState({
+      modalFrameFullscreen: true,
+      modalFrameFullscreenImg: url,
+      modalFrameFullscreenText: text,
+    });
+  }
+
   render() {
     console.log(this.state);
     return (
       <div className="App">
         <div className="Engine">
+          <SkyLightStateless
+            isVisible={this.state.modalFrameFullscreen}
+            onOverlayClicked={() => {
+              this.setState({ modalFrameFullscreen: false });
+            }}
+            onCloseClicked={() => {
+              this.setState({ modalFrameFullscreen: false });
+            }}
+          >
+            <img
+              className="img-fullscreen"
+              src={this.state.modalFrameFullscreenImg}
+            />
+            <p>
+              {this.state.modalFrameFullscreenText}
+            </p>
+          </SkyLightStateless>
           <Story
             story={this.state.myStory}
             name={this.state.ourStory.name}
@@ -154,6 +186,7 @@ class OrikishiEngine extends Component {
             setCurrentBranch={this.setCurrentBranch}
             rewind={this.rewind}
             addFollowUp={this.addFollowUp}
+            showFrameFullScreen={this.showFrameFullScreen}
           />
         </div>
       </div>
@@ -196,6 +229,7 @@ class Story extends Component {
         last={i === this.props.story.length - 1}
         rewind={this.props.rewind}
         addFollowUp={this.props.addFollowUp}
+        showFrameFullScreen={this.props.showFrameFullScreen}
       />
     );
     return (
@@ -229,7 +263,7 @@ class Story extends Component {
               );
             }}
           >
-            <input
+            <textarea
               ref="textInput"
               type="text"
               placeholder="Your caption/commentary/joke here (optional)"
@@ -260,6 +294,7 @@ class Step extends Component {
         currentBranch={this.props.currentBranch}
         openModal={this.props.openModal}
         addFollowUp={this.props.addFollowUp}
+        showFrameFullScreen={this.props.showFrameFullScreen}
         onClick={
           this.props.last ? this.props.setCurrentBranch : this.props.rewind
         }
@@ -282,15 +317,18 @@ class Frame extends Component {
 
     return (
       <div className="Frame">
-        <div onClick={() => this.props.onClick(branch, frame)}>
+        <div
+          onClick={() => this.props.showFrameFullScreen(frame.url, frame.text)}
+        >
           <img src={frame.url} alt="" />
           <p>
             {frame.text}
           </p>
         </div>
-        <button onClick={() => this.props.openModal(frame.id)}>
-          Continue this story
+        <button onClick={() => this.props.onClick(branch, frame)}>
+          Continue
         </button>
+        <button onClick={() => this.props.openModal(frame.id)}>Create</button>
       </div>
     );
   }
