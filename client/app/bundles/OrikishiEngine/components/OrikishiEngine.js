@@ -295,6 +295,7 @@ class Step extends Component {
         openModal={this.props.openModal}
         addFollowUp={this.props.addFollowUp}
         showFrameFullScreen={this.props.showFrameFullScreen}
+        last={this.props.last}
         onClick={
           this.props.last ? this.props.setCurrentBranch : this.props.rewind
         }
@@ -326,9 +327,13 @@ class Frame extends Component {
           </p>
         </div>
         <button onClick={() => this.props.onClick(branch, frame)}>
-          Continue
+          {this.props.last ? "Continue" : "Go back"}
         </button>
-        <button onClick={() => this.props.openModal(frame.id)}>Create</button>
+        {this.props.last
+          ? null
+          : <button onClick={() => this.props.openModal(frame.id)}>
+              Create
+            </button>}
       </div>
     );
   }
