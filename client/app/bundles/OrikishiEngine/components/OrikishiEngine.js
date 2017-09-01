@@ -154,12 +154,15 @@ class OrikishiEngine extends Component {
     });
   }
 
+  modalFrameFullscreenStyles = {};
+
   render() {
     console.log(this.state);
     return (
       <div className="App">
         <div className="Engine">
           <SkyLightStateless
+            dialogStyles={this.modalFrameFullscreenStyles}
             isVisible={this.state.modalFrameFullscreen}
             onOverlayClicked={() => {
               this.setState({ modalFrameFullscreen: false });
@@ -172,9 +175,7 @@ class OrikishiEngine extends Component {
               className="img-fullscreen"
               src={this.state.modalFrameFullscreenImg}
             />
-            <p>
-              {this.state.modalFrameFullscreenText}
-            </p>
+            <p>{this.state.modalFrameFullscreenText}</p>
           </SkyLightStateless>
           <Story
             story={this.state.myStory}
@@ -208,6 +209,7 @@ class Story extends Component {
   handleImageChange(event) {
     let reader = new FileReader();
     let file = event.target.files[0];
+
     reader.onloadend = () => {
       this.setState({
         imagePreviewUrl: reader.result,
@@ -219,7 +221,7 @@ class Story extends Component {
   }
 
   render() {
-    const steps = this.props.story.map((s, i) =>
+    const steps = this.props.story.map((s, i) => (
       <Step
         step={s}
         key={i}
@@ -231,7 +233,7 @@ class Story extends Component {
         addFollowUp={this.props.addFollowUp}
         showFrameFullScreen={this.props.showFrameFullScreen}
       />
-    );
+    ));
     return (
       <div className="Story">
         <h2>Orikishi</h2>
@@ -245,9 +247,7 @@ class Story extends Component {
           }}
           title="Continue the story"
         >
-          <h4>
-            {this.state.file ? this.state.file.name : ""}
-          </h4>
+          <h4>{this.state.file ? this.state.file.name : ""}</h4>
           <img
             className="img-preview"
             src={this.state.imagePreviewUrl}
@@ -276,9 +276,7 @@ class Story extends Component {
             <button type="submit">Creer</button>
           </form>
         </SkyLightStateless>
-        <h3>
-          {this.props.name}
-        </h3>
+        <h3>{this.props.name}</h3>
         {steps}
       </div>
     );
@@ -287,7 +285,7 @@ class Story extends Component {
 
 class Step extends Component {
   render() {
-    const frames = this.props.step.map((f, i) =>
+    const frames = this.props.step.map((f, i) => (
       <Frame
         frame={f}
         key={i}
@@ -296,17 +294,14 @@ class Step extends Component {
         addFollowUp={this.props.addFollowUp}
         showFrameFullScreen={this.props.showFrameFullScreen}
         last={this.props.last}
+        choice={this.props.step.length > 1}
         onClick={
           this.props.last ? this.props.setCurrentBranch : this.props.rewind
         }
       />
-    );
+    ));
 
-    return (
-      <div className="Step">
-        {frames}
-      </div>
-    );
+    return <div className="Step">{frames}</div>;
   }
 }
 
@@ -314,6 +309,7 @@ class Frame extends Component {
   render() {
     const frame = this.props.frame;
     const branch = frame.branches[1] || frame.branches[0];
+    const { last, choice } = this.props;
     let text;
 
     return (
@@ -322,18 +318,16 @@ class Frame extends Component {
           onClick={() => this.props.showFrameFullScreen(frame.url, frame.text)}
         >
           <img src={frame.url} alt="" />
-          <p>
-            {frame.text}
-          </p>
+          <p>{frame.text}</p>
         </div>
-        <button onClick={() => this.props.onClick(branch, frame)}>
-          {this.props.last ? "Continue" : "Go back"}
-        </button>
-        {this.props.last
-          ? null
-          : <button onClick={() => this.props.openModal(frame.id)}>
-              Create
-            </button>}
+        {last && !choice ? null : (
+          <button onClick={() => this.props.onClick(branch, frame)}>
+            {last ? "Continue" : "Go back"}
+          </button>
+        )}
+        {choice ? null : (
+          <button onClick={() => this.props.openModal(frame.id)}>Create</button>
+        )}
       </div>
     );
   }
