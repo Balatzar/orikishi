@@ -3,12 +3,13 @@ class Survey < ApplicationRecord
   has_many :questions
   
   def jsonify
+    survey = Survey.includes(questions: :choices).find(self.id)
     {
-      id: self.id,
-      name: self.name,
-      random: self.random,
-      time: self.time,
-      questions: self.questions.sort.map do |q|
+      id: survey.id,
+      name: survey.name,
+      random: survey.random,
+      time: survey.time,
+      questions: survey.questions.sort.map do |q|
         {
           text: q.text,
           required: q.required,

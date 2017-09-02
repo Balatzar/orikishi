@@ -21,9 +21,10 @@ class Story < ApplicationRecord
   end
 
   def jsonify
+    story = Story.includes(steps: {frames: :branches}).find(self.id)
     {
-      name: self.name,
-      steps: self.steps.sort.map do |s|
+      name: story.name,
+      steps: story.steps.sort.map do |s|
         {
           frames: s.frames.sort.map do |f|
             {

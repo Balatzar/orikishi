@@ -20,6 +20,7 @@ gem "paperclip", "~> 5.0.0"
 gem 'aws-sdk', '~> 2.3'
 gem "react_on_rails", "8.0.0"
 gem 'normalize-rails'
+gem 'simple-line-icons-rails'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
