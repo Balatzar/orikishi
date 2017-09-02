@@ -33,10 +33,17 @@
     justify-content: center
 
 .Frame
+  box-shadow: $big-shadow
   color: $text-light
   margin: 0 25px
   width: 450px
-  box-shadow: $big-shadow
+
+  @media (max-width: $screen-sm)
+    box-shadow: none
+    width: 100vw
+    margin: 0
+    &:not(:last-child)
+      margin: 0 30px 0 0
 
   .or-story-title
     background-color: $dark-blue
@@ -46,8 +53,11 @@
     margin: 0 auto
     width: 450px
 
+    @media (max-width: $screen-sm)
+      width: 100vw
+
   img
-    width: 450px
+    width: 100%
 
   .or-frame-infos
     background-color: $dark-blue
