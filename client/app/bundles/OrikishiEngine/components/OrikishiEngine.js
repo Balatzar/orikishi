@@ -3,6 +3,8 @@ import ReactOnRails from "react-on-rails";
 import request from "superagent";
 import { SkyLightStateless } from "react-skylight";
 
+import { ContinueButton, GoBackButton, CreateButton } from "./buttons";
+
 const csrfToken = ReactOnRails.authenticityToken();
 
 class OrikishiEngine extends Component {
@@ -232,11 +234,12 @@ class Story extends Component {
         rewind={this.props.rewind}
         addFollowUp={this.props.addFollowUp}
         showFrameFullScreen={this.props.showFrameFullScreen}
+        storyName={this.props.name}
+        firstStep={i < 1}
       />
     ));
     return (
       <div className="Story">
-        <h2>Orikishi</h2>
         <SkyLightStateless
           isVisible={this.props.modalOpen}
           onOverlayClicked={() => {
@@ -276,7 +279,6 @@ class Story extends Component {
             <button type="submit">Creer</button>
           </form>
         </SkyLightStateless>
-        <h3>{this.props.name}</h3>
         {steps}
       </div>
     );
@@ -298,10 +300,16 @@ class Step extends Component {
         onClick={
           this.props.last ? this.props.setCurrentBranch : this.props.rewind
         }
+        storyName={this.props.storyName}
+        firstStep={this.props.firstStep}
       />
     ));
 
-    return <div className="Step">{frames}</div>;
+    return (
+      <div className="Step">
+        <div className="or-step-flexContainer">{frames}</div>
+      </div>
+    );
   }
 }
 
@@ -314,20 +322,34 @@ class Frame extends Component {
 
     return (
       <div className="Frame">
+        {this.props.firstStep ? (
+          <div className="or-story-title">
+            <h3>{this.props.storyName}</h3>
+          </div>
+        ) : null}
         <div
           onClick={() => this.props.showFrameFullScreen(frame.url, frame.text)}
+          className="or-frame-img"
         >
           <img src={frame.url} alt="" />
-          <p>{frame.text}</p>
         </div>
-        {last && !choice ? null : (
-          <button onClick={() => this.props.onClick(branch, frame)}>
-            {last ? "Continue" : "Go back"}
-          </button>
-        )}
-        {choice ? null : (
-          <button onClick={() => this.props.openModal(frame.id)}>Create</button>
-        )}
+        <div className="or-frame-infos">
+          <div className="or-frame-description">
+            <p>{frame.text}</p>
+          </div>
+          <div className="or-frame-actions">
+            {last && !choice ? null : last ? (
+              <ContinueButton
+                onClick={() => this.props.onClick(branch, frame)}
+              />
+            ) : (
+              <GoBackButton onClick={() => this.props.onClick(branch, frame)} />
+            )}
+            {choice ? null : (
+              <CreateButton onClick={() => this.props.openModal(frame.id)} />
+            )}
+          </div>
+        </div>
       </div>
     );
   }
