@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   get '/', to: 'public#index'
 
-  resources :story, only: ["new", "create"]
+  resources :stories, only: ["new", "create"]
   resources :surveys do
-    resources :participation, only: ["create"]
+    resources :participations, only: ["create"]
   end
 
   # MUST BE AFTER EVERYTHING

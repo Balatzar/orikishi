@@ -50,7 +50,7 @@ frame10 = frame5.add_follow_up text: "NIET IS FURFIRE!", image: File.new("#{Rail
 
 pp "Stories created"
 
-survey = Survey.create! name: "Enquete de satisfaction", random: true, time: 5
+survey = Survey.create! name: "Enquete de satisfaction", random: true, time: 5, active: true
 
 question0 = Question.create! survey: survey, text: "Etes-vous satisfait du site pour l'instant ?", multiple: false, required: true
 question1 = Question.create! survey: survey, text: "Pensez vous que nous devrions mettre un 'paint' directement dans le site ?", multiple: false, required: true

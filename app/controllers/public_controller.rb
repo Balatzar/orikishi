@@ -7,10 +7,10 @@ class PublicController < ApplicationController
 
   def orikishi
     @orikishi_engine_props = { story: @story.jsonify, add_follow_up_path: "/#{@story.slug}/add_follow_up" }
-    survey = Survey.order("RANDOM()").first
+    survey = Survey.find_by(active: true)
     @survey_props = {
       survey: survey.jsonify,
-      postUrl: survey_participation_index_path(survey),
+      postUrl: survey_participations_path(survey),
       ending: {
         text:
           "Merci d'avoir repondu ! Vous pouvez nous laisser votre mail si vous acceptez que nous vous contactions pour vous demander votre avis pour des fonctionnalités futures :) Vous pouvez vos idées/suggestions/doléances dans le champ suivant",
