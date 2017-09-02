@@ -1,4 +1,4 @@
-class ParticipationController < ApplicationController
+class ParticipationsController < ApplicationController
   def create
     survey_results = params.require(:survey).permit(:email, :comment, answers: [:id, answers: []])
     participation = Participation.create! email: survey_results[:email], comment: survey_results[:comment], survey: Survey.find(params[:survey_id])
