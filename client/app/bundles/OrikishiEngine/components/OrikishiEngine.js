@@ -7,6 +7,8 @@ import { ContinueButton, GoBackButton, CreateButton } from "./buttons";
 
 const csrfToken = ReactOnRails.authenticityToken();
 
+const primaryBlue = "#4ab8bb";
+
 class OrikishiEngine extends Component {
   constructor(props) {
     super(props);
@@ -156,7 +158,22 @@ class OrikishiEngine extends Component {
     });
   }
 
-  modalFrameFullscreenStyles = {};
+  modalFrameFullscreenStyles = {
+    closeButtonStyle: {
+      backgroundColor: primaryBlue,
+      right: 0,
+      width: "100%",
+      textAlign: "left",
+      color: "#fff",
+    },
+    layout: {
+      width: "600px",
+      maxHeight: "1000px",
+      top: "30%",
+      padding: 0,
+      height: "auto",
+    },
+  };
 
   render() {
     console.log(this.state);
@@ -164,7 +181,8 @@ class OrikishiEngine extends Component {
       <div className="App">
         <div className="Engine">
           <SkyLightStateless
-            dialogStyles={this.modalFrameFullscreenStyles}
+            dialogStyles={this.modalFrameFullscreenStyles.layout}
+            closeButtonStyle={this.modalFrameFullscreenStyles.closeButtonStyle}
             isVisible={this.state.modalFrameFullscreen}
             onOverlayClicked={() => {
               this.setState({ modalFrameFullscreen: false });
